@@ -244,6 +244,6 @@ const getResult = () => {
   return (result);
 };
 
-const usersPhoto = Array.from({length: 5}, getResult);
+const usersPhoto = Array.from({length: 25}, getResult);
 
 console.log(usersPhoto);
