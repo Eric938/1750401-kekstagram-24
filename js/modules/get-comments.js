@@ -1,5 +1,5 @@
-import {getRandomInteger} from './modules/random-integer.js';
-import {getRandomId} from './modules/random-id.js';
+import {getRandomInteger} from '../modules/random-integer.js';
+import {getRandomId} from '../modules/random-id.js';
 
 const AVATARS = [
   'img/avatar-1.svg',

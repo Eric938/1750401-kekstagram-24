@@ -1,3 +1,1 @@
-import {getUsersPhotos} from './modules/users-photos.js';
-
-getUsersPhotos();
+import './modules/miniatures.js';
