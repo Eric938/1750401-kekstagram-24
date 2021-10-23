@@ -1,13 +1,18 @@
-import {getRandomInteger} from './modules/random-integer.js';
-import {getPhoto} from './modules/get-photo.js';
-import {getComments} from './modules/get-comments.js';
+import {getRandomInteger} from '../modules/random-integer.js';
+import {getPhoto} from '../modules/get-photo.js';
+import {getComments} from '../modules/get-comments.js';
 
-const getRandomPhoto = () => ({
-  photo: getPhoto(),
-  likes: getRandomInteger(15,200),
-  comments: getComments(),
-});
+const getRandomPhoto = () => {
+  const randomPhoto = getPhoto();
+  const usersComments = getComments();
+  return {
+    url: randomPhoto.url,
+    description: randomPhoto.description,
+    id: randomPhoto.id,
+    likes: getRandomInteger(15,200),
+    comments: usersComments,
+  };
+};
 
 const getUsersPhotos = () => Array.from({length: 25}, getRandomPhoto);
-
 export {getUsersPhotos};
