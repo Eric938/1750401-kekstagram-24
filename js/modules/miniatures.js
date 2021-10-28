@@ -1,22 +1,26 @@
 import {getUsersPhotos} from '../modules/users-photos.js';
 
-const photosListElement = document.querySelector('.pictures');
+const photosList = document.querySelector('.pictures');
 
 const templatePhotos = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
 const photos = getUsersPhotos();
-const photo1 = photos[0];
 
 const photosListFragment = document.createDocumentFragment();
 
-photos.forEach((photo) => {
-  const photoElement = templatePhotos.cloneNode(true);
-  photoElement.querySelector('.picture__img').src = photo.url;
-  photoElement.querySelector('.picture__likes').textContent = photo.likes;
-  photoElement.querySelector('.picture__comments').textContent = photo1.comments.length;
-  photosListFragment.appendChild(photoElement);
-});
+const getPhotosGallery = () => {
+  photos.forEach((photo) => {
+    const picture = templatePhotos.cloneNode(true);
+    picture.querySelector('.picture__img').src = photo.url;
+    picture.querySelector('.picture__img').alt = photo.description;
+    picture.querySelector('.picture__likes').textContent = photo.likes;
+    picture.querySelector('.picture__comments').textContent = photo.comments.length;
+    photosListFragment.appendChild(picture);
+  });
 
-photosListElement.appendChild(photosListFragment);
+  photosList.appendChild(photosListFragment);
+};
+
+export {getPhotosGallery, photos};
