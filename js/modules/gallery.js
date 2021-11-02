@@ -1,5 +1,5 @@
-import {renderPhoto, picturesListFragment} from '../modules/render-photo.js';
-import {onPopupEscKeydown} from '../modules/close-popup.js';
+import {renderPhoto} from '../modules/render-photo.js';
+import {onPopupBigPhotoEscKeydown} from '../modules/close-popup.js';
 
 const picturesList = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -8,15 +8,21 @@ const img = bigPictureImg.querySelector('img');
 const socialCaption = bigPicture.querySelector('.social__caption');
 const likesCount = bigPicture.querySelector('.likes-count');
 const commentsCount = bigPicture.querySelector('.comments-count');
+const socialCommentCount = bigPicture.querySelector('.social__comment-count');
+const commentsLoader = bigPicture.querySelector('.comments-loader');
 
 
 const socialComment = document.querySelector('.social__comment');
 const socialComments = document.querySelector('.social__comments');
 
+const addClassModalOpen = () => document.body.classList.add('modal-open');
+
 const renderBigPhoto = (photo) => {
-  document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onPopupEscKeydown);
+  addClassModalOpen();
+  document.addEventListener('keydown', onPopupBigPhotoEscKeydown);
   bigPicture.classList.remove('hidden');
+  commentsLoader.classList.add('hidden');
+  socialCommentCount.classList.add('hidden');
 
   img.src = photo.url;
   socialCaption.textContent = photo.description;
@@ -34,18 +40,18 @@ const renderBigPhoto = (photo) => {
   });
   socialComments.innerHTML = '';
   socialComments.appendChild(commentsList);
-  commentsList.remove();
 };
 
-const getPhotosGallery = (photos) => {
-  document.querySelector('.social__comment-count').classList.add('hidden');
-  document.querySelector('.comments-loader').classList.add('hidden');
+const addPhotos = (photos) => {
+  const fragment = document.createDocumentFragment();
 
   photos.forEach((photo) => {
-    renderPhoto(photo, renderBigPhoto);
+    fragment.append(renderPhoto(photo, renderBigPhoto));
   });
-  picturesList.appendChild(picturesListFragment);
-  picturesListFragment.remove();
+
+  picturesList.appendChild(fragment);
 };
 
-export {getPhotosGallery, bigPicture};
+const hideBigPhoto = () => bigPicture.classList.add('hidden');
+
+export {addPhotos, hideBigPhoto, addClassModalOpen};

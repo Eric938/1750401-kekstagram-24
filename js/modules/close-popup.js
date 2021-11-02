@@ -1,25 +1,57 @@
 import  {isEscapeKey} from'../modules/utils.js';
-import {bigPicture} from '../modules/gallery.js';
+import {hideBigPhoto} from '../modules/gallery.js';
+import {hideImgUploadOverlay, cleanUploadFile} from '../modules/new-image-loading.js';
+import {cleanComment} from '../modules/comment-validation.js';
+import {cleanHashtags} from '../modules/hashtags-validation.js';
 
-const closeButton = document.querySelector('.big-picture__cancel');
+const closeButtonBigPicture = document.querySelector('.big-picture__cancel');
+const closeButtonUpload = document.querySelector('#upload-cancel');
 
-const closePhoto = () => {
-  bigPicture.classList.add('hidden');
+
+const closePopup = () => {
   document.body.classList.remove('modal-open');
 };
 
-const onPopupEscKeydown = (evt) => {
+const closePopupBigPhoto = () => {
+  closePopup();
+  hideBigPhoto();
+};
+
+const closePopupUpload = () => {
+  closePopup();
+  hideImgUploadOverlay();
+  cleanUploadFile();
+  cleanHashtags();
+  cleanComment();
+};
+
+const onPopupBigPhotoEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closePhoto();
-    document.removeEventListener('keydown', onPopupEscKeydown);
+    closePopupBigPhoto();
+    document.removeEventListener('keydown', onPopupBigPhotoEscKeydown);
   }
 };
 
 
-closeButton.addEventListener('click', ()=> {
-  closePhoto();
-  document.removeEventListener('keydown', onPopupEscKeydown);
+closeButtonBigPicture.addEventListener('click', ()=> {
+  closePopupBigPhoto();
+  document.removeEventListener('keydown', onPopupBigPhotoEscKeydown);
 });
 
-export {onPopupEscKeydown};
+
+const onPopupUploadEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closePopupUpload();
+    document.removeEventListener('keydown', onPopupUploadEscKeydown);
+  }
+};
+
+
+closeButtonUpload.addEventListener('click', ()=> {
+  closePopupUpload();
+  document.removeEventListener('keydown', onPopupUploadEscKeydown);
+});
+
+export {onPopupBigPhotoEscKeydown, onPopupUploadEscKeydown};
