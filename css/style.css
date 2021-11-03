@@ -697,6 +697,11 @@ main {
   border-radius: 5px;
 }
 
+.img-upload__text input:invalid,
+.img-upload__text textarea:invalid {
+  border: 2px solid #ff0000;
+}
+
 
 /**
  * Кнопка для отправки изображения

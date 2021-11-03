@@ -14,5 +14,5 @@ const getRandomPhoto = () => {
   };
 };
 
-const UsersPhotos = Array.from({length: 25}, getRandomPhoto);
-export {UsersPhotos};
+const usersPhotos = Array.from({length: 25}, getRandomPhoto);
+export {usersPhotos};

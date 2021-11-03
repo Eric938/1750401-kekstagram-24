@@ -1,5 +1,6 @@
-import {renderPhoto, picturesListFragment} from '../modules/render-photo.js';
-import {onPopupEscKeydown} from '../modules/close-popup.js';
+import {renderPhoto} from '../modules/render-photo.js';
+import {onPopupBigPhotoEscKeydown} from '../modules/close-popup.js';
+import  {hideElement, showHiddenElement} from'../modules/utils.js';
 
 const picturesList = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -8,15 +9,26 @@ const img = bigPictureImg.querySelector('img');
 const socialCaption = bigPicture.querySelector('.social__caption');
 const likesCount = bigPicture.querySelector('.likes-count');
 const commentsCount = bigPicture.querySelector('.comments-count');
-
+const socialCommentCount = bigPicture.querySelector('.social__comment-count');
+const moreCommentsButton = bigPicture.querySelector('.comments-loader');
 
 const socialComment = document.querySelector('.social__comment');
 const socialComments = document.querySelector('.social__comments');
 
-const renderBigPhoto = (photo) => {
+const addClassModalOpen = () => {
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onPopupEscKeydown);
-  bigPicture.classList.remove('hidden');
+};
+
+const addKeydownEventListener = (here) => {
+  document.addEventListener('keydown', here);
+};
+
+const renderBigPhoto = (photo) => {
+  addClassModalOpen();
+  addKeydownEventListener(onPopupBigPhotoEscKeydown);
+  showHiddenElement(bigPicture);
+  hideElement(socialCommentCount);
+  hideElement(moreCommentsButton);
 
   img.src = photo.url;
   socialCaption.textContent = photo.description;
@@ -34,18 +46,14 @@ const renderBigPhoto = (photo) => {
   });
   socialComments.innerHTML = '';
   socialComments.appendChild(commentsList);
-  commentsList.remove();
 };
 
-const getPhotosGallery = (photos) => {
-  document.querySelector('.social__comment-count').classList.add('hidden');
-  document.querySelector('.comments-loader').classList.add('hidden');
-
-  photos.forEach((photo) => {
-    renderPhoto(photo, renderBigPhoto);
-  });
-  picturesList.appendChild(picturesListFragment);
-  picturesListFragment.remove();
+const addPhotos = (photos) => {
+  picturesList.append(...photos.map((photo) => renderPhoto(photo, renderBigPhoto)));
 };
 
-export {getPhotosGallery, bigPicture};
+const hideBigPhoto = () => {
+  hideElement(bigPicture);
+};
+
+export {addPhotos, hideBigPhoto, addClassModalOpen, addKeydownEventListener};
