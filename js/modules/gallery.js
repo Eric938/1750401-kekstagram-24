@@ -1,5 +1,6 @@
 import {renderPhoto} from '../modules/render-photo.js';
 import {onPopupBigPhotoEscKeydown} from '../modules/close-popup.js';
+import  {hideElement, showHiddenElement} from'../modules/utils.js';
 
 const picturesList = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -9,20 +10,25 @@ const socialCaption = bigPicture.querySelector('.social__caption');
 const likesCount = bigPicture.querySelector('.likes-count');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-const commentsLoader = bigPicture.querySelector('.comments-loader');
-
+const moreCommentsButton = bigPicture.querySelector('.comments-loader');
 
 const socialComment = document.querySelector('.social__comment');
 const socialComments = document.querySelector('.social__comments');
 
-const addClassModalOpen = () => document.body.classList.add('modal-open');
+const addClassModalOpen = () => {
+  document.body.classList.add('modal-open');
+};
+
+const addKeydownEventListener = (here) => {
+  document.addEventListener('keydown', here);
+};
 
 const renderBigPhoto = (photo) => {
   addClassModalOpen();
-  document.addEventListener('keydown', onPopupBigPhotoEscKeydown);
-  bigPicture.classList.remove('hidden');
-  commentsLoader.classList.add('hidden');
-  socialCommentCount.classList.add('hidden');
+  addKeydownEventListener(onPopupBigPhotoEscKeydown);
+  showHiddenElement(bigPicture);
+  hideElement(socialCommentCount);
+  hideElement(moreCommentsButton);
 
   img.src = photo.url;
   socialCaption.textContent = photo.description;
@@ -43,15 +49,11 @@ const renderBigPhoto = (photo) => {
 };
 
 const addPhotos = (photos) => {
-  const fragment = document.createDocumentFragment();
-
-  photos.forEach((photo) => {
-    fragment.append(renderPhoto(photo, renderBigPhoto));
-  });
-
-  picturesList.appendChild(fragment);
+  picturesList.append(...photos.map((photo) => renderPhoto(photo, renderBigPhoto)));
 };
 
-const hideBigPhoto = () => bigPicture.classList.add('hidden');
+const hideBigPhoto = () => {
+  hideElement(bigPicture);
+};
 
-export {addPhotos, hideBigPhoto, addClassModalOpen};
+export {addPhotos, hideBigPhoto, addClassModalOpen, addKeydownEventListener};

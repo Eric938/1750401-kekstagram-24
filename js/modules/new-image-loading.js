@@ -1,19 +1,25 @@
 import {addClassModalOpen} from '../modules/gallery.js';
 import {onPopupUploadEscKeydown} from '../modules/close-popup.js';
+import  {hideElement, cleanElement, showHiddenElement} from'../modules/utils.js';
+import {addKeydownEventListener} from '../modules/gallery.js';
 
 const uploadFile = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 
-const hideImgUploadOverlay = () => imgUploadOverlay.classList.add('hidden');
-
-const cleanUploadFile = () => uploadFile.value = '';
-
-const openEditForm = () => {
-  imgUploadOverlay.classList.remove('hidden');
-  addClassModalOpen();
-  document.addEventListener('keydown', onPopupUploadEscKeydown);
+const hideImgUploadOverlay = () => {
+  hideElement(imgUploadOverlay);
 };
 
-uploadFile.addEventListener('change', openEditForm);
+const cleanUploadFile = () => {
+  cleanElement(uploadFile);
+};
+
+const onUploadFileChange = () => {
+  showHiddenElement(imgUploadOverlay);
+  addClassModalOpen();
+  addKeydownEventListener(onPopupUploadEscKeydown);
+};
+
+uploadFile.addEventListener('change', onUploadFileChange);
 
 export {hideImgUploadOverlay, cleanUploadFile};

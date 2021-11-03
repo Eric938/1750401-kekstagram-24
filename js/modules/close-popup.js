@@ -25,18 +25,21 @@ const closePopupUpload = () => {
   cleanComment();
 };
 
+const removeKeydownEventListener = (here) => {
+  document.removeEventListener('keydown', here);
+};
+
 const onPopupBigPhotoEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closePopupBigPhoto();
-    document.removeEventListener('keydown', onPopupBigPhotoEscKeydown);
+    removeKeydownEventListener(onPopupBigPhotoEscKeydown);
   }
 };
 
-
 closeButtonBigPicture.addEventListener('click', ()=> {
   closePopupBigPhoto();
-  document.removeEventListener('keydown', onPopupBigPhotoEscKeydown);
+  removeKeydownEventListener(onPopupBigPhotoEscKeydown);
 });
 
 
@@ -44,14 +47,14 @@ const onPopupUploadEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closePopupUpload();
-    document.removeEventListener('keydown', onPopupUploadEscKeydown);
+    removeKeydownEventListener(onPopupUploadEscKeydown);
   }
 };
 
 
 closeButtonUpload.addEventListener('click', ()=> {
   closePopupUpload();
-  document.removeEventListener('keydown', onPopupUploadEscKeydown);
+  removeKeydownEventListener(onPopupUploadEscKeydown);
 });
 
-export {onPopupBigPhotoEscKeydown, onPopupUploadEscKeydown};
+export {onPopupBigPhotoEscKeydown, onPopupUploadEscKeydown, removeKeydownEventListener};

@@ -1,29 +1,19 @@
-import {onPopupUploadEscKeydown} from '../modules/close-popup.js';
+import {onPopupUploadEscKeydown, removeKeydownEventListener} from '../modules/close-popup.js';
+import  {cleanElement} from'../modules/utils.js';
+import {addKeydownEventListener} from '../modules/gallery.js';
 
 const commentText = document.querySelector('.text__description');
 
-const MAX_COMMENT_LENGTH = 140;
-
-commentText.addEventListener('input', () => {
-  const valueLength = commentText.value.length;
-
-  if (valueLength > MAX_COMMENT_LENGTH) {
-    commentText.setCustomValidity(`Удалите лишние ${  valueLength - MAX_COMMENT_LENGTH } симв.`);
-  } else {
-    commentText.setCustomValidity('');
-  }
-
-  commentText.reportValidity();
-});
-
-const cleanComment = () => commentText.value = '';
+const cleanComment = () => {
+  cleanElement(commentText);
+};
 
 commentText.addEventListener('focus', () => {
-  document.removeEventListener('keydown', onPopupUploadEscKeydown);
+  removeKeydownEventListener(onPopupUploadEscKeydown);
 });
 
 commentText.addEventListener('blur', () => {
-  document.addEventListener('keydown', onPopupUploadEscKeydown);
+  addKeydownEventListener(onPopupUploadEscKeydown);
 });
 
 export {cleanComment};
