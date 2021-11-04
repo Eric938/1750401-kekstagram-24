@@ -1,6 +1,8 @@
 import {renderPhoto} from '../modules/render-photo.js';
 import {onPopupBigPhotoEscKeydown} from '../modules/close-popup.js';
-import  {hideElement, showHiddenElement} from'../modules/utils.js';
+import  {hideElement, showHiddenElement, addKeydownEventListener} from'../modules/utils.js';
+import  {showComments} from'../modules/show-comment.js';
+import {addEventOnMoreButton} from '../modules/show-comment.js';
 
 const picturesList = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -9,8 +11,6 @@ const img = bigPictureImg.querySelector('img');
 const socialCaption = bigPicture.querySelector('.social__caption');
 const likesCount = bigPicture.querySelector('.likes-count');
 const commentsCount = bigPicture.querySelector('.comments-count');
-const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-const moreCommentsButton = bigPicture.querySelector('.comments-loader');
 
 const socialComment = document.querySelector('.social__comment');
 const socialComments = document.querySelector('.social__comments');
@@ -19,16 +19,11 @@ const addClassModalOpen = () => {
   document.body.classList.add('modal-open');
 };
 
-const addKeydownEventListener = (here) => {
-  document.addEventListener('keydown', here);
-};
 
 const renderBigPhoto = (photo) => {
   addClassModalOpen();
   addKeydownEventListener(onPopupBigPhotoEscKeydown);
   showHiddenElement(bigPicture);
-  hideElement(socialCommentCount);
-  hideElement(moreCommentsButton);
 
   img.src = photo.url;
   socialCaption.textContent = photo.description;
@@ -46,6 +41,12 @@ const renderBigPhoto = (photo) => {
   });
   socialComments.innerHTML = '';
   socialComments.appendChild(commentsList);
+
+  const socialCommentsChilds = socialComments.querySelectorAll('.social__comment');
+
+  addEventOnMoreButton();
+
+  showComments(socialCommentsChilds);
 };
 
 const addPhotos = (photos) => {
@@ -56,4 +57,4 @@ const hideBigPhoto = () => {
   hideElement(bigPicture);
 };
 
-export {addPhotos, hideBigPhoto, addClassModalOpen, addKeydownEventListener};
+export {addPhotos, hideBigPhoto, addClassModalOpen};

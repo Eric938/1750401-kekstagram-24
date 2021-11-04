@@ -1,6 +1,5 @@
-import {onPopupUploadEscKeydown, removeKeydownEventListener} from '../modules/close-popup.js';
-import  {cleanElement} from'../modules/utils.js';
-import {addKeydownEventListener} from '../modules/gallery.js';
+import {onPopupUploadEscKeydown} from '../modules/close-popup.js';
+import  {cleanElement, addKeydownEventListener, removeKeydownEventListener} from'../modules/utils.js';
 
 const commentText = document.querySelector('.text__description');
 

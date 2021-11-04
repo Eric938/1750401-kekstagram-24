@@ -1,15 +1,18 @@
-import  {isEscapeKey} from'../modules/utils.js';
+import  {isEscapeKey, removeKeydownEventListener} from'../modules/utils.js';
 import {hideBigPhoto} from '../modules/gallery.js';
 import {hideImgUploadOverlay, cleanUploadFile} from '../modules/new-image-loading.js';
 import {cleanComment} from '../modules/comment-validation.js';
 import {cleanHashtags} from '../modules/hashtags-validation.js';
+import {removeEventMoreButton, showHiddenButton, cleanSocialCommentCount} from '../modules/show-comment.js';
 
 const closeButtonBigPicture = document.querySelector('.big-picture__cancel');
 const closeButtonUpload = document.querySelector('#upload-cancel');
 
-
 const closePopup = () => {
   document.body.classList.remove('modal-open');
+  showHiddenButton();
+  removeEventMoreButton();
+  cleanSocialCommentCount();
 };
 
 const closePopupBigPhoto = () => {
@@ -23,10 +26,6 @@ const closePopupUpload = () => {
   cleanUploadFile();
   cleanHashtags();
   cleanComment();
-};
-
-const removeKeydownEventListener = (here) => {
-  document.removeEventListener('keydown', here);
 };
 
 const onPopupBigPhotoEscKeydown = (evt) => {
@@ -57,4 +56,4 @@ closeButtonUpload.addEventListener('click', ()=> {
   removeKeydownEventListener(onPopupUploadEscKeydown);
 });
 
-export {onPopupBigPhotoEscKeydown, onPopupUploadEscKeydown, removeKeydownEventListener};
+export {onPopupBigPhotoEscKeydown, onPopupUploadEscKeydown};

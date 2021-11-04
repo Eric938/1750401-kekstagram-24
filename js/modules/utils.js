@@ -12,4 +12,12 @@ const cleanElement = (element) => {
   element.value = '';
 };
 
-export {isEscapeKey, hideElement, cleanElement, showHiddenElement};
+const addKeydownEventListener = (callback) => {
+  document.addEventListener('keydown', callback);
+};
+
+const removeKeydownEventListener = (callback) => {
+  document.removeEventListener('keydown', callback);
+};
+
+export {isEscapeKey, hideElement, cleanElement, showHiddenElement, addKeydownEventListener, removeKeydownEventListener};
