@@ -41,6 +41,6 @@ const getComment = () => ({
   name: NAMES[getRandomInteger(0, NAMES.length-1)],
 });
 
-const getComments = () => Array.from({length: getRandomInteger(1,6)}, getComment);
+const getComments = () => Array.from({length: getRandomInteger(1,40)}, getComment);
 
 export {getComments};
