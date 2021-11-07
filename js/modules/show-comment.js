@@ -3,6 +3,11 @@ import  {hideElement, showHiddenElement} from'../modules/utils.js';
 const socialCommentCount = document.querySelector('.social__comment-count');
 const moreCommentsButton = document.querySelector('.comments-loader');
 
+const INITIAL_COMMENTS = 5;
+const MAX_REMAINDER_COMMENTS = 5;
+const COMMENTS_SHOWN = 4;
+
+
 const cleanSocialCommentCount = () => {
   socialCommentCount.textContent = '';
 };
@@ -13,45 +18,45 @@ const showHiddenButton = () => {
   }
 };
 
-const putNumbersOfComments = (currentNumber, totalNumber) => {
-  socialCommentCount.textContent = `${currentNumber} из ${totalNumber} комментариев`;
+const putCountComments = (current, total) => {
+  socialCommentCount.textContent = `${current} из ${total} комментариев`;
 };
 
 const onMoreCommentsButtonClick = () => {
   const socialCommentsChildsHidden = document.querySelectorAll('.social__comment.hidden');
 
-  const totalNumberOfComments = document.querySelectorAll('.social__comment').length;
+  const totalComments = document.querySelectorAll('.social__comment').length;
 
-  let commentsNumber = 4;
+  let commentsShownAmount = COMMENTS_SHOWN;
 
-  putNumbersOfComments(totalNumberOfComments + 5 - socialCommentsChildsHidden.length, totalNumberOfComments);
+  putCountComments(totalComments + INITIAL_COMMENTS - socialCommentsChildsHidden.length, totalComments);
 
-  if (socialCommentsChildsHidden.length <= 5) {
+  if (socialCommentsChildsHidden.length <= MAX_REMAINDER_COMMENTS) {
     hideElement(moreCommentsButton);
-    putNumbersOfComments(totalNumberOfComments, totalNumberOfComments);
+    putCountComments(totalComments, totalComments);
     if (socialCommentsChildsHidden.length > 0) {
-      commentsNumber = socialCommentsChildsHidden.length - 1;
+      commentsShownAmount = socialCommentsChildsHidden.length - 1;
     }
   }
 
-  for (let i= 0; i <= commentsNumber; i++) {
+  for (let i= 0; i <= commentsShownAmount; i++) {
     showHiddenElement(socialCommentsChildsHidden[i]);
   }
 };
 
 const showComments = (comments) => {
-  const totalNumberOfComments = comments.length;
+  const totalComments = comments.length;
 
-  if (totalNumberOfComments <= 5) {
-    putNumbersOfComments(totalNumberOfComments, totalNumberOfComments);
+  if (totalComments <= INITIAL_COMMENTS) {
+    putCountComments(totalComments, totalComments);
     hideElement(moreCommentsButton);
   }
   else {
-    for (let i= 5; i < totalNumberOfComments; i++) {
+    for (let i= INITIAL_COMMENTS; i < totalComments; i++) {
       hideElement(comments[i]);
     }
 
-    putNumbersOfComments(5, totalNumberOfComments);
+    putCountComments(INITIAL_COMMENTS, totalComments);
   }
 };
 

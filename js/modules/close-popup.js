@@ -4,6 +4,7 @@ import {hideImgUploadOverlay, cleanUploadFile} from '../modules/new-image-loadin
 import {cleanComment} from '../modules/comment-validation.js';
 import {cleanHashtags} from '../modules/hashtags-validation.js';
 import {removeEventMoreButton, showHiddenButton, cleanSocialCommentCount} from '../modules/show-comment.js';
+import {removeEventOnScaleControlButtons, cleanStyles, cleanImageClasses, removeEventEffect} from '../modules/edit-image.js';
 
 const closeButtonBigPicture = document.querySelector('.big-picture__cancel');
 const closeButtonUpload = document.querySelector('#upload-cancel');
@@ -26,6 +27,10 @@ const closePopupUpload = () => {
   cleanUploadFile();
   cleanHashtags();
   cleanComment();
+  removeEventOnScaleControlButtons();
+  cleanStyles();
+  cleanImageClasses();
+  removeEventEffect();
 };
 
 const onPopupBigPhotoEscKeydown = (evt) => {
