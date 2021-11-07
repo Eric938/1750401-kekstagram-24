@@ -1,10 +1,40 @@
 import  {hideElement, showHiddenElement} from'../modules/utils.js';
 
+const STEP = 0.25;
+const MAX_SIZE = 1;
+const MIN_SIZE = 0.25;
+const NUMERAL_SYSTEM = 10;
+const CONVERSION = 100;
+
+const SLIDER_MIN = 0;
+const SLIDER_MAX = 100;
+const SLIDER_STEP = 1;
+
+const EFFECT_CHROME_MIN = 0;
+const EFFECT_CHROME_MAX = 1;
+const EFFECT_CHROME_STEP = 0.1;
+
+const EFFECT_SEPIA_MIN = 0;
+const EFFECT_SEPIA_MAX = 1;
+const EFFECT_SEPIA_STEP = 0.1;
+
+const EFFECT_MARVIN_MIN = 1;
+const EFFECT_MARVIN_MAX = 100;
+const EFFECT_MARVIN_STEP = 1;
+
+const EFFECT_PHOBOS_MIN = 0;
+const EFFECT_PHOBOS_MAX = 3;
+const EFFECT_PHOBOS_STEP = 0.1;
+
+const EFFECT_HEAT_MIN = 1;
+const EFFECT_HEAT_MAX = 3;
+const EFFECT_HEAT_STEP = 0.1;
+
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
-const imgUploadpreview = document.querySelector('.img-upload__preview');
-const uploadpreviewImg = imgUploadpreview.querySelector('img');
+const imgUploadPreview = document.querySelector('.img-upload__preview');
+const uploadPreviewImg = imgUploadPreview.querySelector('img');
 
 const effectLevel = document.querySelector('.img-upload__effect-level');
 const effectLevelValue = effectLevel.querySelector('.effect-level__value');
@@ -19,24 +49,28 @@ const effectMarvin = effectsList.querySelector('#effect-marvin');
 const effectPhobos = effectsList.querySelector('#effect-phobos');
 const effectHeat = effectsList.querySelector('#effect-heat');
 
-const STEP = 0.25;
-const MAX_SIZE = 1;
-const MIN_SIZE = 0.25;
+const getScaleInputValue = () => parseInt(scaleControlValue.value, NUMERAL_SYSTEM)/CONVERSION;
+
+const editImageSize = (inputValue) => {
+  uploadPreviewImg.style.transform = `scale(${inputValue})`;
+  scaleControlValue.value = `${inputValue*CONVERSION}%`;
+};
 
 const onScaleControlSmallerClick = () => {
-  const scaleInputValue = parseInt(scaleControlValue.value, 10)/100;
+  const scaleInputValue = getScaleInputValue();
+
   if (scaleInputValue > MIN_SIZE) {
-    uploadpreviewImg.style.transform = `scale(${scaleInputValue - STEP})`;
-    scaleControlValue.value = `${(scaleInputValue - STEP)*100}%`;
+    const inputValue = scaleInputValue - STEP;
+    editImageSize(inputValue);
   }
 };
 
 const onScaleControlBiggerClick = () => {
-  const scaleInputValue = parseInt(scaleControlValue.value, 10)/100;
+  const scaleInputValue = getScaleInputValue();
 
   if (scaleInputValue < MAX_SIZE) {
-    uploadpreviewImg.style.transform = `scale(${scaleInputValue + STEP})`;
-    scaleControlValue.value = `${(scaleInputValue + STEP)*100}%`;
+    const inputValue = scaleInputValue + STEP;
+    editImageSize(inputValue);
   }
 };
 
@@ -50,44 +84,94 @@ const removeEventOnScaleControlButtons = () => {
   scaleControlBigger.removeEventListener('click', onScaleControlBiggerClick);
 };
 
-const returnOriginalSize = () => {
-  uploadpreviewImg.style = '';
+const cleanStyles = () => {
+  uploadPreviewImg.style = '';
 };
 
+const cleanStyleFilter = () => {
+  uploadPreviewImg.style.filter = '';
+};
 
-noUiSlider.create(effectLevelSlider, {
-  range: {
-    min: 0,
-    max: 100,
-  },
-  start: 100,
-  step: 1,
-  connect: 'lower',
-  format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
-  },
-});
-
-const deleteImageClasses = () => {
-  uploadpreviewImg.className = '';
+const cleanImageClasses = () => {
+  uploadPreviewImg.className = '';
 };
 
 const hideEffectLevel = () => {
   hideElement(effectLevel);
 };
 
+const addInitialValues = () => {
+  cleanImageClasses();
+  cleanStyleFilter();
+};
+
+const editeSliderRange = (min, max, step) => {
+  showHiddenElement(effectLevel);
+  addInitialValues();
+  effectLevelSlider.noUiSlider.updateOptions({
+    range: {
+      min: min,
+      max: max,
+    },
+    step: step,
+  });
+  effectLevelSlider.noUiSlider.set(max);
+};
+
+const onEffectListChange = () => {
+  if (effectNone.checked) {
+    hideEffectLevel();
+    addInitialValues();
+  }
+  if (effectChrome.checked) {
+    editeSliderRange(EFFECT_CHROME_MIN, EFFECT_CHROME_MAX, EFFECT_CHROME_STEP);
+    uploadPreviewImg.classList.add('effects__preview--chrome');
+  }
+  if (effectSepia.checked) {
+    editeSliderRange(EFFECT_SEPIA_MIN, EFFECT_SEPIA_MAX, EFFECT_SEPIA_STEP);
+    uploadPreviewImg.classList.add('effects__preview--sepia');
+  }
+  if (effectMarvin.checked) {
+    editeSliderRange(EFFECT_MARVIN_MIN, EFFECT_MARVIN_MAX, EFFECT_MARVIN_STEP);
+    uploadPreviewImg.classList.add('effects__preview--marvin');
+  }
+  if (effectPhobos.checked) {
+    editeSliderRange(EFFECT_PHOBOS_MIN, EFFECT_PHOBOS_MAX, EFFECT_PHOBOS_STEP);
+    uploadPreviewImg.classList.add('effects__preview--phobos');
+  }
+  if (effectHeat.checked) {
+    editeSliderRange(EFFECT_HEAT_MIN, EFFECT_HEAT_MAX, EFFECT_HEAT_STEP);
+    uploadPreviewImg.classList.add('effects__preview--heat');
+  }
+};
+
 
 const addImageEffect = () => {
+  noUiSlider.create(effectLevelSlider, {
+    range: {
+      min: SLIDER_MIN,
+      max: SLIDER_MAX,
+    },
+    start: SLIDER_MAX,
+    step: SLIDER_STEP,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+
   effectLevelSlider.noUiSlider.on('update', (values, handle) => {
     effectLevelValue.value = values[handle];
+
+    effectsList.addEventListener('change', onEffectListChange);
 
     if (effectChrome.checked) {
       document.querySelector('.effects__preview--chrome').style.filter = `grayscale(${values[handle]})`;
@@ -105,78 +189,11 @@ const addImageEffect = () => {
       document.querySelector('.effects__preview--heat').style.filter = `brightness(${values[handle]})`;
     }
   });
-
-  effectsList.addEventListener('change', () => {
-    if (effectNone.checked) {
-      hideEffectLevel();
-      deleteImageClasses();
-    }
-    if (effectChrome.checked) {
-      showHiddenElement(effectLevel);
-      deleteImageClasses();
-      uploadpreviewImg.classList.add('effects__preview--chrome');
-      effectLevelSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        step: 0.1,
-      });
-      effectLevelSlider.noUiSlider.set(1);
-    }
-    if (effectSepia.checked) {
-      showHiddenElement(effectLevel);
-      deleteImageClasses();
-      uploadpreviewImg.classList.add('effects__preview--sepia');
-      effectLevelSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 1,
-        },
-        step: 0.1,
-      });
-      effectLevelSlider.noUiSlider.set(1);
-    }
-    if (effectMarvin.checked) {
-      showHiddenElement(effectLevel);
-      deleteImageClasses();
-      uploadpreviewImg.classList.add('effects__preview--marvin');
-      effectLevelSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 100,
-        },
-        step: 1,
-      });
-      effectLevelSlider.noUiSlider.set(100);
-    }
-    if (effectPhobos.checked) {
-      showHiddenElement(effectLevel);
-      deleteImageClasses();
-      uploadpreviewImg.classList.add('effects__preview--phobos');
-      effectLevelSlider.noUiSlider.updateOptions({
-        range: {
-          min: 0,
-          max: 3,
-        },
-        step: 0.1,
-      });
-      effectLevelSlider.noUiSlider.set(3);
-    }
-    if (effectHeat.checked) {
-      showHiddenElement(effectLevel);
-      deleteImageClasses();
-      uploadpreviewImg.classList.add('effects__preview--heat');
-      effectLevelSlider.noUiSlider.updateOptions({
-        range: {
-          min: 1,
-          max: 3,
-        },
-        step: 0.1,
-      });
-      effectLevelSlider.noUiSlider.set(3);
-    }
-  });
 };
 
-export {addEventOnScaleControlButtons, removeEventOnScaleControlButtons, returnOriginalSize, hideEffectLevel, deleteImageClasses, addImageEffect};
+const removeEventEffect = () => {
+  effectLevelSlider.noUiSlider.destroy();
+  effectsList.removeEventListener('change', onEffectListChange);
+};
+
+export {addEventOnScaleControlButtons, removeEventOnScaleControlButtons, cleanStyles, hideEffectLevel, cleanImageClasses, addImageEffect, removeEventEffect};
