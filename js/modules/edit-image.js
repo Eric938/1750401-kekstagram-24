@@ -74,6 +74,10 @@ const onScaleControlBiggerClick = () => {
   }
 };
 
+const addInitialInputValue = () => {
+  scaleControlValue.value = '100%';
+};
+
 const addEventOnScaleControlButtons = () => {
   scaleControlSmaller.addEventListener('click', onScaleControlSmallerClick);
   scaleControlBigger.addEventListener('click', onScaleControlBiggerClick);
@@ -196,4 +200,4 @@ const removeEventEffect = () => {
   effectsList.removeEventListener('change', onEffectListChange);
 };
 
-export {addEventOnScaleControlButtons, removeEventOnScaleControlButtons, cleanStyles, hideEffectLevel, cleanImageClasses, addImageEffect, removeEventEffect};
+export {addEventOnScaleControlButtons, removeEventOnScaleControlButtons, cleanStyles, hideEffectLevel, cleanImageClasses, addImageEffect, removeEventEffect, addInitialInputValue};

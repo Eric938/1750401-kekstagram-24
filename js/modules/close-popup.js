@@ -4,21 +4,21 @@ import {hideImgUploadOverlay, cleanUploadFile} from '../modules/new-image-loadin
 import {cleanComment} from '../modules/comment-validation.js';
 import {cleanHashtags} from '../modules/hashtags-validation.js';
 import {removeEventMoreButton, showHiddenButton, cleanSocialCommentCount} from '../modules/show-comment.js';
-import {removeEventOnScaleControlButtons, cleanStyles, cleanImageClasses, removeEventEffect} from '../modules/edit-image.js';
+import {removeEventOnScaleControlButtons, cleanStyles, cleanImageClasses, removeEventEffect, addInitialInputValue} from '../modules/edit-image.js';
 
 const closeButtonBigPicture = document.querySelector('.big-picture__cancel');
 const closeButtonUpload = document.querySelector('#upload-cancel');
 
 const closePopup = () => {
   document.body.classList.remove('modal-open');
-  showHiddenButton();
-  removeEventMoreButton();
-  cleanSocialCommentCount();
 };
 
 const closePopupBigPhoto = () => {
   closePopup();
   hideBigPhoto();
+  showHiddenButton();
+  removeEventMoreButton();
+  cleanSocialCommentCount();
 };
 
 const closePopupUpload = () => {
@@ -31,6 +31,7 @@ const closePopupUpload = () => {
   cleanStyles();
   cleanImageClasses();
   removeEventEffect();
+  addInitialInputValue();
 };
 
 const onPopupBigPhotoEscKeydown = (evt) => {
@@ -61,4 +62,4 @@ closeButtonUpload.addEventListener('click', ()=> {
   removeKeydownEventListener(onPopupUploadEscKeydown);
 });
 
-export {onPopupBigPhotoEscKeydown, onPopupUploadEscKeydown};
+export {onPopupBigPhotoEscKeydown, onPopupUploadEscKeydown, closePopupUpload};
