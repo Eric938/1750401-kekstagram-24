@@ -68,4 +68,10 @@ const removeEventMoreButton = () => {
   moreCommentsButton.removeEventListener('click', onMoreCommentsButtonClick);
 };
 
-export{showComments, cleanSocialCommentCount, showHiddenButton, addEventOnMoreButton, removeEventMoreButton};
+export {
+  addEventOnMoreButton,
+  cleanSocialCommentCount,
+  removeEventMoreButton,
+  showComments,
+  showHiddenButton
+};

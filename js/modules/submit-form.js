@@ -89,16 +89,21 @@ const showErrorMessage = () => {
 };
 
 
-const setImgUploadSubmit = (onSuccess, onFail) => {
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+const onImgUploadFormSubmit = (evt) => {
+  evt.preventDefault();
 
-    sendData(
-      () => onSuccess(),
-      () => onFail(),
-      new FormData(evt.target),
-    );
-  });
+  sendData(
+    showSuccsessMessage,
+    showErrorMessage,
+    new FormData(evt.target),
+  );
+
+  imgUploadForm.removeEventListener('submit', onImgUploadFormSubmit);
 };
 
-export {setImgUploadSubmit, showErrorMessage, showSuccsessMessage};
+
+const addEventUploadForm = () => {
+  imgUploadForm.addEventListener('submit', onImgUploadFormSubmit);
+};
+
+export {addEventUploadForm};

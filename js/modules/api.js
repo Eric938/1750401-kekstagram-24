@@ -1,6 +1,4 @@
-import {showAlert} from '../modules/utils.js';
-
-const getData = (onSuccess) => {
+const getData = (onSuccess, onFail) => {
   fetch('https://24.javascript.pages.academy/kekstagram/data')
     .then((response) => {
       if (response.ok) {
@@ -10,10 +8,10 @@ const getData = (onSuccess) => {
       throw new Error('Не удалось загрузить данные с сервера');
     })
     .then((response) => response.json())
-    .then((photos) => {
-      onSuccess(photos);
+    .then((data) => {
+      onSuccess(data);
     })
-    .catch((error) => showAlert(error));
+    .catch(onFail);
 };
 
 const sendData = (onSuccess, onFail, body) => {
@@ -31,9 +29,7 @@ const sendData = (onSuccess, onFail, body) => {
         onFail();
       }
     })
-    .catch(() => {
-      onFail();
-    });
+    .catch(onFail);
 };
 
 export {getData, sendData};

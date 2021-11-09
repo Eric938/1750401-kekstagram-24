@@ -57,4 +57,4 @@ const hideBigPhoto = () => {
   hideElement(bigPicture);
 };
 
-export {addPhotos, hideBigPhoto, addClassModalOpen};
+export {addClassModalOpen, addPhotos, hideBigPhoto};

@@ -4,11 +4,15 @@ import './modules/close-popup.js';
 import './modules/new-image-loading.js';
 import './modules/hashtags-validation.js';
 import {getData} from './modules/api.js';
-import {setImgUploadSubmit, showErrorMessage, showSuccsessMessage} from './modules/submit-form.js';
+import {showAlert} from './modules/utils.js';
 
 
-getData((photos) => {
-  addPhotos(photos);
-});
+const onDataLoadSuccess = (data) => {
+  addPhotos(data);
+};
 
-setImgUploadSubmit(showSuccsessMessage, showErrorMessage);
+const onDataLoadFail = (error) => {
+  showAlert(error);
+};
+
+getData(onDataLoadSuccess, onDataLoadFail);

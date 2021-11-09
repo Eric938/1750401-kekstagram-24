@@ -122,7 +122,7 @@ const editeSliderRange = (min, max, step) => {
   effectLevelSlider.noUiSlider.set(max);
 };
 
-const onEffectListChange = () => {
+const onEffectsListChange = () => {
   if (effectNone.checked) {
     hideEffectLevel();
     addInitialValues();
@@ -175,7 +175,7 @@ const addImageEffect = () => {
   effectLevelSlider.noUiSlider.on('update', (values, handle) => {
     effectLevelValue.value = values[handle];
 
-    effectsList.addEventListener('change', onEffectListChange);
+    effectsList.addEventListener('change', onEffectsListChange);
 
     if (effectChrome.checked) {
       document.querySelector('.effects__preview--chrome').style.filter = `grayscale(${values[handle]})`;
@@ -197,7 +197,21 @@ const addImageEffect = () => {
 
 const removeEventEffect = () => {
   effectLevelSlider.noUiSlider.destroy();
-  effectsList.removeEventListener('change', onEffectListChange);
+  effectsList.removeEventListener('change', onEffectsListChange);
 };
 
-export {addEventOnScaleControlButtons, removeEventOnScaleControlButtons, cleanStyles, hideEffectLevel, cleanImageClasses, addImageEffect, removeEventEffect, addInitialInputValue};
+const addOriginalEffectChecked = () => {
+  effectNone.checked = true;
+};
+
+export {
+  addEventOnScaleControlButtons,
+  addImageEffect,
+  addInitialInputValue,
+  addOriginalEffectChecked,
+  cleanImageClasses,
+  cleanStyles,
+  hideEffectLevel,
+  removeEventEffect,
+  removeEventOnScaleControlButtons
+};

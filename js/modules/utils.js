@@ -24,15 +24,18 @@ const removeKeydownEventListener = (callback) => {
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = 100;
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = 0;
-  alertContainer.style.top = 0;
-  alertContainer.style.right = 0;
-  alertContainer.style.padding = '50px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
+
+  const style = alertContainer.style;
+
+  style.zIndex = 100;
+  style.position = 'absolute';
+  style.left = 0;
+  style.top = 0;
+  style.right = 0;
+  style.padding = '50px 3px';
+  style.fontSize = '30px';
+  style.textAlign = 'center';
+  style.backgroundColor = 'red';
 
   alertContainer.textContent = message;
 
@@ -43,4 +46,12 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {isEscapeKey, hideElement, cleanElement, showHiddenElement, addKeydownEventListener, removeKeydownEventListener, showAlert};
+export {
+  addKeydownEventListener,
+  cleanElement,
+  hideElement,
+  isEscapeKey,
+  removeKeydownEventListener,
+  showAlert,
+  showHiddenElement
+};
