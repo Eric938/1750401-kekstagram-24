@@ -46,11 +46,29 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const removeElements = (elements) => {
+  for (let i=0; i < elements.length; i++) {
+    elements[i].remove();
+  }
+};
+
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 export {
   addKeydownEventListener,
   cleanElement,
+  debounce,
   hideElement,
   isEscapeKey,
+  removeElements,
   removeKeydownEventListener,
   showAlert,
   showHiddenElement
