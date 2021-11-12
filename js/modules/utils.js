@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
+const RERENDER_DELAY = 500;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -46,11 +47,27 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const removeElements = (elements) => {
+  elements.forEach((element) => {
+    element.remove();
+  });
+};
+
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(callback, timeoutDelay, ...rest);
+  };
+};
+
 export {
   addKeydownEventListener,
   cleanElement,
+  debounce,
   hideElement,
   isEscapeKey,
+  removeElements,
   removeKeydownEventListener,
   showAlert,
   showHiddenElement

@@ -6,6 +6,8 @@ const MIN_SIZE = 0.25;
 const NUMERAL_SYSTEM = 10;
 const CONVERSION = 100;
 
+const INITIAL_INPUT_VALUE = '100%';
+
 const SLIDER_MIN = 0;
 const SLIDER_MAX = 100;
 const SLIDER_STEP = 1;
@@ -75,7 +77,7 @@ const onScaleControlBiggerClick = () => {
 };
 
 const addInitialInputValue = () => {
-  scaleControlValue.value = '100%';
+  scaleControlValue.value = INITIAL_INPUT_VALUE;
 };
 
 const addEventOnScaleControlButtons = () => {

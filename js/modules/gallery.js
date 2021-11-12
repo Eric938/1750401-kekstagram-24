@@ -1,8 +1,9 @@
 import {renderPhoto} from '../modules/render-photo.js';
 import {onPopupBigPhotoEscKeydown} from '../modules/close-popup.js';
-import  {hideElement, showHiddenElement, addKeydownEventListener} from'../modules/utils.js';
+import  {addKeydownEventListener, hideElement, showHiddenElement} from'../modules/utils.js';
 import  {showComments} from'../modules/show-comment.js';
 import {addEventOnMoreButton} from '../modules/show-comment.js';
+
 
 const picturesList = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -52,6 +53,7 @@ const renderBigPhoto = (photo) => {
 const addPhotos = (photos) => {
   picturesList.append(...photos.map((photo) => renderPhoto(photo, renderBigPhoto)));
 };
+
 
 const hideBigPhoto = () => {
   hideElement(bigPicture);
