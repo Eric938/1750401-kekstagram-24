@@ -51,6 +51,12 @@ const effectMarvin = effectsList.querySelector('#effect-marvin');
 const effectPhobos = effectsList.querySelector('#effect-phobos');
 const effectHeat = effectsList.querySelector('#effect-heat');
 
+const putInUserPhoto = (fileChooser) => {
+  const file = fileChooser.files[0];
+
+  uploadPreviewImg.src = URL.createObjectURL(file);
+};
+
 const getScaleInputValue = () => parseInt(scaleControlValue.value, NUMERAL_SYSTEM)/CONVERSION;
 
 const editImageSize = (inputValue) => {
@@ -211,6 +217,7 @@ export {
   addImageEffect,
   addInitialInputValue,
   addOriginalEffectChecked,
+  putInUserPhoto,
   cleanImageClasses,
   cleanStyles,
   hideEffectLevel,
