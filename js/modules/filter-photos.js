@@ -1,64 +1,69 @@
 import {addPhotos} from '../modules/gallery.js';
 import  {debounce, removeElements} from'../modules/utils.js';
-import {getPhotos} from '../modules/get-random-photos.js';
+import {getRandomPhotos} from '../modules/get-random-photos.js';
 
 const CLASS_BUTTON_ACTIVE = 'img-filters__button--active';
 const PHOTOS_QUANTITY = 10;
-const RERENDER_DELAY = 500;
 
 const imgFilters = document.querySelector('.img-filters');
 const filterDefault = imgFilters.querySelector('#filter-default');
 const filterRandom = imgFilters.querySelector('#filter-random');
 const filterDiscussed = imgFilters.querySelector('#filter-discussed');
 
+const removeClassActive = (button) => {
+  button.classList.remove(CLASS_BUTTON_ACTIVE);
+};
+
+const addImages = (images, clickedButton, button, knob) => {
+  const pictures = document.querySelectorAll('.picture');
+  removeElements(pictures);
+
+  addPhotos(images);
+
+  clickedButton.classList.add(CLASS_BUTTON_ACTIVE);
+  removeClassActive(button);
+  removeClassActive(knob);
+};
+
 const filterPhotos = (photos) => {
   addPhotos(photos);
   imgFilters.classList.remove('img-filters--inactive');
 
   const onFilterDefaultClick = () => {
-    const pictures = document.querySelectorAll('.picture');
-    removeElements(pictures);
-
-    addPhotos(photos);
-
-    filterDefault.classList.add(CLASS_BUTTON_ACTIVE);
-    filterRandom.classList.remove(CLASS_BUTTON_ACTIVE);
-    filterDiscussed.classList.remove(CLASS_BUTTON_ACTIVE);
+    addImages(photos,filterDefault, filterRandom, filterDiscussed);
   };
 
   const onFilterRandomClick = () => {
     const receivedPhotos = photos.slice();
 
-    const filteredPhotos = getPhotos(receivedPhotos,PHOTOS_QUANTITY);
+    const filteredPhotos = getRandomPhotos(receivedPhotos,PHOTOS_QUANTITY);
 
-    const pictures = document.querySelectorAll('.picture');
-    removeElements(pictures);
-
-    addPhotos(filteredPhotos);
-
-    filterRandom.classList.add(CLASS_BUTTON_ACTIVE);
-    filterDefault.classList.remove(CLASS_BUTTON_ACTIVE);
-    filterDiscussed.classList.remove(CLASS_BUTTON_ACTIVE);
+    addImages(filteredPhotos,filterRandom, filterDiscussed, filterDefault);
   };
 
   const onFilterDiscussedClick = () => {
-    const filteredPhotos = photos.slice().sort((firstPhoto, secondPhoto) => secondPhoto.likes - firstPhoto.likes);
+    const filteredPhotos = photos.slice().sort((firstPhoto, secondPhoto) => secondPhoto.comments.length - firstPhoto.comments.length);
 
-    const pictures = document.querySelectorAll('.picture');
-    removeElements(pictures);
-
-    addPhotos(filteredPhotos);
-
-    filterDiscussed.classList.add(CLASS_BUTTON_ACTIVE);
-    filterRandom.classList.remove(CLASS_BUTTON_ACTIVE);
-    filterDefault.classList.remove(CLASS_BUTTON_ACTIVE);
+    addImages(filteredPhotos, filterDiscussed, filterDefault, filterRandom);
   };
 
-  filterDefault.addEventListener('click', debounce(onFilterDefaultClick, RERENDER_DELAY));
+  const onImgFiltersClick = (evt) => {
+    const target = evt.target;
 
-  filterRandom.addEventListener('click', debounce(onFilterRandomClick, RERENDER_DELAY));
+    if (target.matches('#filter-default')) {
+      onFilterDefaultClick();
+    }
 
-  filterDiscussed.addEventListener('click', debounce(onFilterDiscussedClick, RERENDER_DELAY));
+    if (target.matches('#filter-random') ) {
+      onFilterRandomClick();
+    }
+
+    if (target.matches('#filter-discussed') ) {
+      onFilterDiscussedClick();
+    }
+  };
+
+  imgFilters.addEventListener('click', debounce(onImgFiltersClick));
 };
 
 export {filterPhotos};

@@ -1,4 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
+const RERENDER_DELAY = 500;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -47,18 +48,16 @@ const showAlert = (message) => {
 };
 
 const removeElements = (elements) => {
-  for (let i=0; i < elements.length; i++) {
-    elements[i].remove();
-  }
+  elements.forEach((element) => {
+    element.remove();
+  });
 };
 
-const debounce = (callback, timeoutDelay) => {
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
   let timeoutId;
-
   return (...rest) => {
     clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(callback, timeoutDelay, ...rest);
   };
 };
 
